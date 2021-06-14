@@ -16,7 +16,6 @@ class DomainCompletionTests: XCTestCase {
     private let HTTP_DOMAIN = "http://example.com"
     private let HTTPS_DOMAIN = "https://example.com"
     private let WWWW_DOMAIN = "https://www.example.com"
-    private let TEST_CASE_INSENSITIVE = "https://www.EXAMPLE.com"
     private let TEST_NO_PERIOD = "example"
     
     func testAddCustomDomain() {
@@ -37,13 +36,11 @@ class DomainCompletionTests: XCTestCase {
     
     func testAddCustomDomainDuplicate() {
         Settings.setCustomDomainSetting(domains: [SIMPLE_DOMAIN])
-        [WWWW_DOMAIN, TEST_CASE_INSENSITIVE].forEach {
-            switch CustomCompletionSource().add(suggestion: $0) {
-            case .error(let error):
-                XCTAssertEqual(error, .duplicateDomain)
-            case .success:
-                XCTFail()
-            }
+        switch CustomCompletionSource().add(suggestion: WWWW_DOMAIN) {
+        case .error(let error):
+            XCTAssertEqual(error, .duplicateDomain)
+        case .success:
+            XCTFail()
         }
     }
     

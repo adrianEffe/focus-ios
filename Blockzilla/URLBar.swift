@@ -446,6 +446,14 @@ class URLBar: UIView {
         urlText.rightView?.animateHidden(!shouldDisplay, duration: animated ? UIConstants.layout.urlBarTransitionAnimationDuration : 0)
     }
 
+    private func manageClearButton(text: String) {
+        if text.count > 0 {
+            displayClearButton(shouldDisplay: true)
+        } else {
+            displayClearButton(shouldDisplay: false)
+        }
+    }
+
     public func dismissTextField() {
         urlText.isUserInteractionEnabled = false
         urlText.endEditing(true)
@@ -871,6 +879,7 @@ extension URLBar: AutocompleteTextFieldDelegate {
         }
 
         delegate?.urlBar(self, didEnterText: text)
+        manageClearButton(text: text)
     }
 }
 
